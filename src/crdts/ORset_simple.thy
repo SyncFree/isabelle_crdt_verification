@@ -1,14 +1,12 @@
 theory ORset_simple
 imports ORset_spec 
-"../framework/induction"
-"../framework/helper" 
-"../framework/convergence" 
 begin
 
 (* simpler version of OR-set (but takes more space, queries take more time)
-Here all sets are increasing, so semilattice properties do not have to be shown.
-Also no invariant is necessary.
+Difference to the ORset_impl is, that elements are not removed from the Elements set when they are added to the tombstone set
+Here all sets are increasing, so semilattice properties are trivial.
 *)
+
 type_synonym 'a payload = "('a \<times> versionVector) set \<times> ('a \<times> versionVector) set \<times> versionVector"
 
 

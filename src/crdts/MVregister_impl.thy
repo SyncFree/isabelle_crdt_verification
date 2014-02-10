@@ -3,6 +3,11 @@ imports
 MVregister_spec
 begin
 
+(* Multi-Value register, inefficient implementation, 
+behavior similar to specification 10 in A comprehensive study of Convergent and Commutative Replicated Data Types,
+except for the case of assigning an empty list of elements
+*)
+
 type_synonym 'a payload = "versionVector \<times> ('a list \<times> versionVector) set"
 
 fun update :: "'a updateArgs \<Rightarrow> replicaId \<Rightarrow> 'a payload \<Rightarrow> 'a payload" where

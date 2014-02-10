@@ -3,6 +3,10 @@ imports
 MVregister2_spec
 begin
 
+(* Multi-Value register, based on specification 10 in A comprehensive study of Convergent and Commutative Replicated Data Types
+The bug in the original description was fixed by ignoring assignments of the empty list.
+*)
+
 type_synonym 'a payload = "('a option \<times> versionVector) set"
 
 definition incVersions :: "'a payload \<Rightarrow> replicaId \<Rightarrow> versionVector" where

@@ -6,6 +6,7 @@ gset_spec
 "../framework/convergence" 
 begin
 
+(* State-based grow-only Set, specification 11 in A comprehensive study of Convergent and Commutative Replicated Data Types*)
 
 definition add :: "'a \<Rightarrow> replicaId \<Rightarrow> 'a set \<Rightarrow> 'a set" where
 "add x r = insert x"

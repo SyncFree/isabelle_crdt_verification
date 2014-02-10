@@ -4,7 +4,7 @@ twoPhaseSet2_spec
 begin
 
 (*
-same as twoPhaseSet, but remove only has an effect if element is in the set
+same as twoPhaseSet_impl, but remove only has an effect if element is in the set
 *)
 
 type_synonym 'a payload = "'a set \<times> 'a set"

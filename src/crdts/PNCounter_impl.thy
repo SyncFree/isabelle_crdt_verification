@@ -3,6 +3,8 @@ imports
 PNCounter_spec
 begin
 
+(* Positive-Negative Counter, based on specification 7 from A comprehensive study of Convergent and Commutative Replicated Data Types *)
+
 type_synonym payload = "(replicaId \<Rightarrow> int) \<times> (replicaId \<Rightarrow> int)"
 
 fun update :: "int \<Rightarrow> replicaId \<Rightarrow> payload \<Rightarrow> payload" where

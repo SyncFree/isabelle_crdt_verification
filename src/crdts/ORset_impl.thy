@@ -1,10 +1,12 @@
 theory ORset_impl
 imports
 ORset_spec
-"../framework/simulations"
-"../framework/helper" 
-"../framework/convergence" 
 begin
+
+(*
+Observed-Remove Set, specification 2 in "An optimized Conflict-free Replicated Set"
+version vectors are used as unique identifiers
+*)
 
 type_synonym 'a payload = "('a \<times> versionVector) set \<times> ('a \<times> versionVector) set \<times> versionVector"
 

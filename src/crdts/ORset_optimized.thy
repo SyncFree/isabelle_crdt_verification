@@ -3,6 +3,9 @@ imports
 ORset_spec
 begin
 
+(*
+Observed-Remove Set, specification 3 in "An optimized Conflict-free Replicated Set"
+*)
 
 type_synonym 'a payload = "(versionVector \<times> ('a \<times> nat \<times> replicaId) set)"
 

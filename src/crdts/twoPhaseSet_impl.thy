@@ -3,6 +3,8 @@ imports
 twoPhaseSet_spec
 begin
 
+(* Two-Phase Set, based on specification 12 in A comprehensive study of Convergent and Commutative Replicated Data Types *)
+
 type_synonym 'a payload = "'a set \<times> 'a set"
 
 fun update :: "'a updateArgs \<Rightarrow> replicaId \<Rightarrow> 'a payload \<Rightarrow> 'a payload" where

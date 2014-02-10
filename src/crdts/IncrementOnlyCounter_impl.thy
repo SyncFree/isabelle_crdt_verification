@@ -5,6 +5,8 @@ IncrementOnlyCounter_spec
 begin
 
 
+(* Increment-Only Counter, specification 6 in A comprehensive study of Convergent and Commutative Replicated Data Types*)
+
 definition increment :: "unit \<Rightarrow> replicaId \<Rightarrow> versionVector \<Rightarrow> versionVector" where
 "increment _ r = incVV r"
 

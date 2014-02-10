@@ -3,6 +3,9 @@ imports
 MVregisterSingle_spec 
 begin
 
+(* Multi-Value register, which only allows assigning a single value,
+inefficient implementation *)
+
 type_synonym 'a payload = "versionVector \<times> ('a \<times> versionVector) set"
 
 fun update :: "'a updateArgs \<Rightarrow> replicaId \<Rightarrow> 'a payload \<Rightarrow> 'a payload" where
