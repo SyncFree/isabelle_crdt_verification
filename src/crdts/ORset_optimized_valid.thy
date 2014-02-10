@@ -1,5 +1,5 @@
-theory ORsetOptimizedValid
-imports ORsetOptimized 
+theory ORset_optimized_valid
+imports ORset_optimized 
 "../framework/helper"
 begin
 

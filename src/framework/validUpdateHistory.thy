@@ -2,8 +2,7 @@ theory validUpdateHistory
 imports specifications
 begin
 
-definition allUpdates :: "'ua updateHistory \<Rightarrow>  ('ua update) set" where
-"allUpdates H = (\<Union>r\<in>UNIV. set (H r))"
+
 
 lemma allUpdates2: "allUpdates H = {y. \<exists>r. y\<in> set(H r)}"
 by (auto simp add: allUpdates_def)
@@ -16,7 +15,7 @@ lemma notinAllUpdatesI[intro]: "(\<And>r. x \<notin>set(H r)) \<Longrightarrow> 
 apply (auto simp add: allUpdates2)
 done
 
-definition "allVersions H = fst ` allUpdates H"
+
 
 lemma inAllVersionsI[intro]: "(v,y)\<in>set(H r) \<Longrightarrow> v \<in> allVersions H"
 by (metis allVersions_def fst_eqD image_iff inAllUpdatesI)

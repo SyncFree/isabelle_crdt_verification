@@ -1,60 +1,8 @@
-theory MVregister
+theory MVregister2_impl_convergence
 imports 
-"../framework/induction"
-"../framework/helper" 
+MVregister2_impl
 "../framework/convergence" 
 begin
-
-datatype 'a updateArgs = Assign "'a list"
-
-type_synonym 'a payload = "('a option \<times> versionVector) set"
-
-definition incVersions :: "'a payload \<Rightarrow> replicaId \<Rightarrow> versionVector" where
-"incVersions pl myId = (
-    let V = snd ` pl;
-        vv = supSet V in
-        (incVV myId vv)
-)"                            
-
-definition assign :: "'a payload \<Rightarrow> replicaId \<Rightarrow> 'a list \<Rightarrow> 'a payload" where
-"assign pl myId R = (if R=[] then pl else let V = incVersions pl myId in (Some ` set R) \<times> {V})"
-
-
-fun update :: "'a updateArgs \<Rightarrow> replicaId \<Rightarrow> 'a payload \<Rightarrow> 'a payload" where
-"update (Assign R) r pl = (assign pl r R)"
-
-fun getValue :: "unit \<Rightarrow> 'a payload \<Rightarrow> ('a \<times> versionVector )set" where
-"getValue _ pl = {(x,v). (Some x, v) \<in> pl}"
-
-definition compareSingle :: "('a option \<times> versionVector) \<Rightarrow> 'a payload \<Rightarrow> bool" where
-"compareSingle x B = (case x of (a,v) \<Rightarrow> (\<exists>(b,w)\<in>B. v < w) \<or> (\<exists>(b,w)\<in>B. v=w \<and> a=b))"
-
-definition compare :: "'a payload \<Rightarrow> 'a payload \<Rightarrow> bool" where
-"compare A B = (\<forall>x\<in>A. compareSingle x B)"
-
-definition merge :: "'a payload \<Rightarrow> 'a payload \<Rightarrow> 'a payload" where
-"merge A B = (
-    let A' = {(x,V). (x,V)\<in>A \<and> (\<forall>(y, W)\<in>B. V \<parallel> W \<or> V \<ge> W)};
-        B' = {(y, W). (y,W)\<in>B \<and> (\<forall>(x, V)\<in>A. W \<parallel> V \<or> W \<ge> V)} in
-        A' \<union> B'
-)"
-
-definition mvRegister where
-"mvRegister = \<lparr> 
-      t_compare = compare,
-      t_merge   = merge,
-      t_initial = {(None, vvZero)},
-      t_update  = update,
-      t_query   = getValue       
-  \<rparr>"
-
-
-definition mvRegisterSpec :: "('a updateArgs, unit, ('a \<times> versionVector) set) crdtSpecification" where
-"mvRegisterSpec H _ = 
-   ({(x,c). (\<exists>r l v. x\<in>set l \<and> (v, Assign l)\<in>set(H r)
-    \<and> (\<forall>rr. c\<guillemotright>rr = length (filter (\<lambda>e. updArgs e \<noteq> Assign [] \<and> updVersion e \<le> v ) (H rr)))
-    \<and> \<not>(\<exists>l' vv. l' \<noteq> [] \<and> vv>v \<and> (vv, Assign l')\<in>allUpdates H))})"
-
 
 definition noElementDominated where 
 "noElementDominated S = (\<forall>(a,v)\<in>S. \<forall>(b,w)\<in>S. \<not> v<w)"
@@ -323,22 +271,14 @@ apply (metis compareRefl)
 apply (metis compareTrans)
 apply (metis compareAntiSymInv)
 apply (metis compareAntiSymInv)
-apply (metis MVregister.merge_commute)
-apply (metis MVregister.merge_commute)
+apply (metis merge_commute)
+apply (metis merge_commute)
 apply (metis merge_prop1)
 apply (metis merge_prop2)
 apply (simp add: invariant_def vvZeroIffNone_def noElementDominated_def)
 apply (metis merge_invariant)
 apply (metis assignInvariant update.simps updateArgs.exhaust)
 done
-
-
-definition mvRegisterInvariant  where
-"mvRegisterInvariant H pl = ((\<forall>x c. (Some x, c)\<in>pl 
-  \<longleftrightarrow> (\<exists>r l v. x\<in>set l \<and> (v, Assign l)\<in>set(H r)
-    \<and> (\<forall>rr. c\<guillemotright>rr = length (filter (\<lambda>e. updArgs e \<noteq> Assign [] \<and> updVersion e \<le> v ) (H rr)))
-    \<and> \<not>(\<exists>l' vv. l' \<noteq> [] \<and> vv>v \<and> (vv, Assign l')\<in>allUpdates H)))
-  \<and> (\<forall>x. (None,x)\<in>pl \<longleftrightarrow> x=vvZero \<and> H = (\<lambda>r. [])))"
 
 
 end

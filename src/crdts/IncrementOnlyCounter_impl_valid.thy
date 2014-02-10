@@ -1,46 +1,12 @@
-theory IncrementOnlyCounter
+theory IncrementOnlyCounter_impl_valid
 imports 
+IncrementOnlyCounter_impl
 "../framework/induction" 
-"../framework/helper" 
-"../framework/convergence"
+"../framework/helper"
 begin
-
-
-
-definition increment :: "unit \<Rightarrow> replicaId \<Rightarrow> versionVector \<Rightarrow> versionVector" where
-"increment _ r = incVV r"
-
-definition getValue :: "unit \<Rightarrow> versionVector \<Rightarrow> nat" where
-"getValue _ v =  (\<Sum>r\<in>UNIV. v\<guillemotright>r)"
-
-definition incrementOnlyCounter :: "(versionVector, unit, unit, nat) stateBasedType" where
-"incrementOnlyCounter = \<lparr> 
-      t_compare = op\<le>,
-      t_merge   = sup,
-      t_initial = vvZero,
-      t_update  = increment,
-      t_query   = getValue       
-  \<rparr>"
-
-(* convergence *)
-
-
-lemma crdtProps: "crdtProperties incrementOnlyCounter (\<lambda>UH pl. True)"
-apply (rule unfoldCrdtProperties)
-apply (case_tac args)
-apply (auto simp add: incrementOnlyCounter_def increment_def)
-apply (simp add: incVVGreaterEq)
-apply (simp add: sup_commute)
-done
-
-
-
 
 (* specification *)
 
-(* getValue returns the number of updates *)
-definition counterSpec :: "(unit,unit,nat) crdtSpecification" where
-"counterSpec H q = card(allUpdates H)"
 
 definition counterInvariant where
 "counterInvariant H pl = (\<forall>r. pl\<guillemotright>r = length (H r))"
@@ -87,7 +53,4 @@ apply (auto simp add: counterInvariant_def incrementOnlyCounter_def increment_de
 done
 
 
-
-
 end
-

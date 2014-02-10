@@ -23,4 +23,10 @@ abbreviation updVersion :: "'a update \<Rightarrow> versionVector" where
 abbreviation happensBefore :: "'a update \<Rightarrow> 'a update \<Rightarrow> bool" (infixr "\<prec>" 50) where
 "a \<prec> b \<equiv> (fst a < fst b)"
 
+definition allUpdates :: "'ua updateHistory \<Rightarrow>  ('ua update) set" where
+"allUpdates H = (\<Union>r\<in>UNIV. set (H r))"
+
+definition "allVersions H = fst ` allUpdates H"
+
+
 end

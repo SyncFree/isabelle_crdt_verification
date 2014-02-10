@@ -1,5 +1,6 @@
-theory ORsetOptimized
-imports ORsetSpecification ORsetSpecification 
+theory ORset_optimized
+imports 
+ORset_spec
 begin
 
 

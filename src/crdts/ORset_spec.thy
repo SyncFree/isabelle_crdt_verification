@@ -1,4 +1,4 @@
-theory ORsetSpecification
+theory ORset_spec
 imports 
 "../framework/induction"
 "../framework/helper" 

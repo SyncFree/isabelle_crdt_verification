@@ -1,5 +1,5 @@
-theory ORsetOptimizedConvergence
-imports ORsetOptimized 
+theory ORset_optimized_convergence
+imports ORset_optimized 
 "../framework/helper" 
 "../framework/convergence" 
 begin 

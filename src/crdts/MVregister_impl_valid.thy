@@ -1,48 +1,9 @@
-theory MVregisterSimple
+theory MVregister_impl_valid
 imports 
+MVregister_impl
 "../framework/induction"
 "../framework/helper" 
-"../framework/convergence" 
 begin
-
-datatype 'a updateArgs = Assign "'a list"
-type_synonym 'a returnType = "('a \<times> versionVector) set"
-
-definition mvRegisterSpec :: "('a updateArgs, unit, 'a returnType) crdtSpecification" where
-"mvRegisterSpec H _ = {(x,v). 
-       (\<forall>vv\<in>allVersions H. \<not>v<vv) 
-    \<and> (\<exists>l. x\<in>set l \<and> (v,Assign l)\<in>allUpdates H)}"
-
-type_synonym 'a payload = "versionVector \<times> ('a list \<times> versionVector) set"
-
-fun update :: "'a updateArgs \<Rightarrow> replicaId \<Rightarrow> 'a payload \<Rightarrow> 'a payload" where
-"update (Assign l) r (V,S) = (incVV r V, S \<union> {(l, incVV r V)})"
-
-fun getValue :: "unit \<Rightarrow> 'a payload \<Rightarrow> ('a \<times> versionVector )set" where
-"getValue _ (V,S) = {(x,v). \<exists>l. x\<in>set l \<and> (l,v)\<in>S \<and> (\<forall>vv\<in>snd`S. \<not>v<vv)}"
-
-definition mvRegister where
-"mvRegister = \<lparr> 
-      t_compare = (\<lambda>x y. fst x \<le> fst y \<and> snd x \<subseteq> snd y),
-      t_merge   = (\<lambda>x y. (sup (fst x) (fst y), snd x \<union> snd y)),
-      t_initial = (vvZero, {}),
-      t_update  = update,
-      t_query   = getValue       
-  \<rparr>"
-
-
-
-
-lemma crdtProps: "crdtProperties mvRegister (\<lambda>H pl. True)"
-apply (rule unfoldCrdtProperties)
-apply (auto simp add: mvRegister_def)
-apply (case_tac args, auto)
-apply (metis incVVGreaterEq)
-apply (case_tac args, auto)
-apply (metis sup.commute)
-done
-
-
 
 
 definition mvRegisterInvariant :: "('a updateArgs) updateHistory \<Rightarrow> 'a payload \<Rightarrow> bool" where
