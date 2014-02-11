@@ -9,7 +9,7 @@ Isabelle 2013-1 and other older verisions are not compatible.
 	can be used to find unused theorems in all files and to load everything at once)
 * src/framework: Contains the general framework which applies to all CRDTs
 * src/crdts: Contains the different verified CRDTs. For each CRDT there are several files with the following postfixes:
-	* ..._spec: the specification of the data type
-	* ..._[implementation-name]: an implementation of the data type
-	* ..._[implementation-name]\_convergence: convergence proofs for the implementation
-	* ..._[implementation-name]\_valid: proofs that the implementation is conform to specification
+	* `[crdt-name]_spec`: the specification of the data type
+	* `[crdt-name]_[implementation-name]`: an implementation of the data type
+	* `[crdt-name]_[implementation-name]_convergence`: convergence proofs for the implementation
+	* `[crdt-name]_[implementation-name]_valid`: proofs that the implementation is conform to its specification
